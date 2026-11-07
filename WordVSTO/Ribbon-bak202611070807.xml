@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI onLoad="Ribbon_Load" xmlns="http://schemas.microsoft.com/office/2006/01/customui">
+    <ribbon>
+        <tabs>
+            <tab id="tabWordVSTO" label="WordVSTO">
+                <group id="groupBookmark" label="书签">
+                    <button id="btnInsertDefaultBookmark" onAction="BtnInsertDefaultBookmark_Click" screentip="在当前光标处插入书签 mark+时间戳" supertip="书签名称形如 mark202611061343。插入后把当前文档完整路径与书签名复制到剪贴板，供跨文档引用。" label="插入默认书签" showImage="false" />
+                </group>
+            </tab>
+        </tabs>
+    </ribbon>
+</customUI>
