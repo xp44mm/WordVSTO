@@ -6,8 +6,8 @@
                 <group id="groupBookmark" label="书签">
                     <button id="btnInsertDefaultBookmark" onAction="BtnInsertDefaultBookmark_Click" screentip="在当前光标处插入书签 mark+时间戳" supertip="书签名称形如 mark202611061343。插入后把当前文档完整路径与书签名复制到剪贴板，供跨文档引用。" label="插入默认书签" showImage="false" />
                 </group>
-                <group id="groupInstance" label="实例">
-                    <button id="btnCopyInstanceInfo" onAction="BtnCopyInstanceInfo_Click" screentip="复制当前 Word 实例的关键信息" supertip="把采集时间、PID、主窗口 HWND、WINWORD.EXE 路径与 ROT 注册名共 5 行复制到剪贴板，供大模型定位并访问这个 Word 实例。" label="复制实例信息" showImage="false" />
+                <group id="groupInstance" label="复制信息">
+                    <button id="btnCopyActiveDocumentInfo" onAction="BtnCopyActiveDocumentInfo_Click" screentip="复制当前文档的引用信息" supertip="把采集时间、PID、ROT 注册名、主窗口 HWND 与 WINWORD.EXE 路径共 5 行实例定位信息，加上当前文档的名称与完整路径复制到剪贴板，供大模型精确定位并引用这个文档。未保存的文档路径标注为「未保存」。" label="复制当前文档引用信息" showImage="false" />
                 </group>
             </tab>
         </tabs>

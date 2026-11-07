@@ -77,10 +77,11 @@ namespace WordVSTO
         }
 
         /// <summary>
-        /// 把当前 Word 实例的 5 行关键信息复制到剪贴板：
-        /// 采集时间 / PID / 主窗口 HWND / WINWORD.EXE 路径 / ROT 注册名。
+        /// 「复制当前文档引用信息」：把定位所需的后台信息（采集时间 / PID / ROT 注册名 /
+        /// 主窗口 HWND / WINWORD.EXE 路径）写入剪贴板，尾部追加当前文档的名称与完整路径，
+        /// 供大模型精确定位并引用这个文档。
         /// </summary>
-        public void BtnCopyInstanceInfo_Click(Office.IRibbonControl control)
+        public void BtnCopyActiveDocumentInfo_Click(Office.IRibbonControl control)
         {
             try
             {
@@ -99,16 +100,38 @@ namespace WordVSTO
                 string hwndHex = "0x" + hwnd.ToString("X8", CultureInfo.InvariantCulture);
 
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("[WordVSTO 当前 Word 实例] 采集时间 " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
+                sb.AppendLine("[WordVSTO 当前文档引用] 采集时间 " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
                 sb.AppendLine("PID : " + pid);
                 sb.AppendLine("ROT : !" + name);
                 sb.AppendLine("HWND : " + hwndHex);
                 sb.AppendLine("WINWORD.EXE : " + exePath);
+
+                Word.Document doc = null;
+                try
+                {
+                    doc = app.ActiveDocument;
+                }
+                catch
+                {
+                    // 一个文档都没打开时 ActiveDocument 会抛 COM 异常，按「无」处理。
+                }
+
+                if (doc == null)
+                {
+                    sb.AppendLine("文档 : (无打开的文档)");
+                    sb.AppendLine("路径 : (无)");
+                }
+                else
+                {
+                    sb.AppendLine("文档 : " + SafeGet(() => doc.Name));
+                    sb.AppendLine("路径 : " + SafeGet(() => string.IsNullOrEmpty(doc.Path) ? "(未保存)" : doc.FullName));
+                }
+
                 Clipboard.SetText(sb.ToString());
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "复制实例信息",
+                MessageBox.Show(ex.Message, "复制当前文档引用信息",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
