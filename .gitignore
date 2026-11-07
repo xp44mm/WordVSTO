@@ -8,3 +8,6 @@ obj/
 *.sln.docstates
 *.cache
 *.pdb
+
+# VSTO temporary signing key
+*.pfx
